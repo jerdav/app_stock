@@ -1,0 +1,924 @@
+                   FEMME
+
+            XS  S  M         L   XL  XXL
+
+CLAIRE
+
+Kaki        3   4  2         4   3
+
+Samui       4   4  4         4   4
+
+Capri       4   5  6         6   6
+
+Mykonos     4   4  3         4   3
+
+Corail      3   4  5         4   6
+
+Noir        4   4  5         7   4
+
+Rose        4   3  4         5   4
+
+Marbella    5   5  4         4   5
+
+Bleu        2   4  3         4   5
+
+Vert d'eau  2   2  1         8   3
+
+JOHANNA     XS  S  M         L   XL  XXL
+
+Kaki        4   4  3         3   4   4
+
+Samui       3   4  4         4   4   4
+
+Capri       4   4  4         4   4   2
+
+Mykonos     5   3            4   4   5
+
+Noir        6   2  4         4   3   7
+
+Marbella    4   4  4         4   2   5
+
+Corail      4   5  5         4   6   4
+
+Vert d'eau  0      3             3   4
+
+Rose        4   3  4         3   6   3
+
+Bleu        4   5  4         2   4   5
+
+ELSA        XS  S  M         L   XL  XXL
+
+Kaki        4   4  3         4   4   4
+
+Samui       3   4  4         4   4   4
+
+Capri       3   3  4         2   4   4
+
+Mykonos     4   4  2         3   2   3
+
+Corail      4   4  2         4   2   3
+
+Noir        5   4  3         2   3   3
+
+Rose        2   3  2         4   3   4
+
+Marbella    2   4  5         4   2   5
+
+Bleu        3   2  2         2   7   3
+
+JULIA       XS  S  M         L   XL  XXL
+
+Mykonos         1                5   3
+
+Corail      4   3            1   2   5
+
+Vert d'eau  4   2            2   9   7
+
+Noir            2                2   5
+
+Rose        2                1   3   2
+
+Marbella           3         1   2   1
+
+Bleu        1   2                7   12
+
+LUNA        XS  S  M         L   XL
+
+Mykonos     1   2  3         3   3
+
+Noir        4   4  3         3   1
+
+Bleu        4   4  4         4   2
+
+MANDY       XS  S  M         L   XL
+
+Mykonos     3   2  2         2   3
+
+Rose        3                14  8
+
+Noir        4   4  2         4   2
+
+Bleu        4   3  3         4   3
+
+                          1
+SONIA LUX    XS  S  M     L  XL
+
+Caramel      2   2  4     2  4
+
+Ivoire       2   4  2     4  2
+
+Noir         4   4  4     4  4
+
+LEO          4   4  4     4  4
+
+CLEM LUX     XS  S  M     L  XL
+
+Caramel      2   2  2     2  2
+
+Ivoire       2   2  2     2  2
+
+Noir         2   2  2     2  2
+
+LEO          2   2  2     2  2
+
+MARION LUX   XS  S  M     L  XL
+
+Noir         4   3  4     4  4
+
+Ivoire       2   2  2     2  2
+
+LEO          3   4  3     4  3
+
+Caramel      4   4  4     4  4
+
+SYLVIE LUX   XS  S  M     L  XL
+
+Noir         4   4  4     4  4
+
+Ivoire       2   2  2     2  2
+
+LEO          4   4  3     4  4
+
+Caramel      4   3  4     4  4
+
+SOLENE LUX       S  M     L
+
+Noir             6  6     5
+
+ABBY LUX         S  M     L
+
+Blanc            2  2     2
+
+LINA LUX     XS  S  M     L  XL
+
+Blanc        4   4  4     4  4
+
+Nude         4   4  4     3  3
+
+KATHY LUX    XS  S  M     L  XL
+
+Blanc        4   4  3     4  3
+
+Nude         3   4  4     4  4
+
+MARILYN LUX  XS  S  M     L  XL
+
+Blanc        3   2  4     3  4
+
+Nude         4   4  2     3  3
+
+ALIZEE LUX   XS  S  M     L  XL
+
+Blanc        4   4  4     4  4
+
+Nude         3   3  3     4  4
+
+ALBA LUX     XS  S  M     L  XL  XXL
+
+Petrol       4   4  4     4  4   4
+
+Choco        3   3  4     4  3   4
+
+Léopard      2   4  2     3  4   3
+
+Bleu         3   4  4     4  4   4
+
+Capri        2   4  3     4  4   3
+
+Tahiti       4   4  4     4  4   4
+
+Rose         4   4  4     3  3   3
+
+Fresh        4   4  4     4  4   3
+
+ANA LUX      XS  S  M     L  XL
+
+Choco        4   3  4     3  4
+
+Léopard      4   3  4     4  4
+
+Petrol       4   4  4     4  4
+
+Bleu         3   4  4     4  4
+
+Capri        4   4  4     3  4
+
+Tahiti       4   4  4     4  4
+
+Rose         4   4  4     4  4
+
+Fresh        4   4  4     4  4
+
+                       2
+CLARA LUX  XS   S     M     L  XL
+
+Colors     2    4     3     3  3
+
+ALIX LUX   XS   S     M     L  XL
+
+Colors     3    4     4     5  3
+
+LOUISE     XS   S     M     L  XL  XXL
+
+Dark       3    5     3     4  4   4
+
+Champagne  4    2     3     3  4   4
+
+Dorée      4    3     4     4  3   4
+
+AUDREY     XS   S     M     L  XL
+
+Dark       3    4     3     6  4
+
+Champagne  4    4     4     3  5
+
+Dorée      3    5     3     6  4
+
+AURELIE    XS   S     M     L  XL  XXL
+
+Dark       4    3     5     4  4   3
+
+Champagne  3    4     4     5  4   4
+
+Dorée      4    5     3     3  4   3
+
+BARBARA    XS   S     M     L  XL  XXL
+
+Dark       4    3     3     5  3   4
+
+Champagne  5    3     2     4  4   5
+
+ELVIRA     XS   S     M     L  XL  XXL
+
+Noir       4    2     2     4  2   3
+
+Blanc      2    4     5     5  6   3
+
+ALYSSA     XS   S     M     L  XL  XXL
+
+Noir       4    5     5     4  6   4
+
+Blanc      3    5     4     5  3   5
+
+ISABELLA   XS   S     M     L  XL  XXL
+
+Noir       6    7     2     5  3   1
+
+Blanc      5    6     5     2  2   3
+
+JOSEPA     XS   S     M     L  XL  XXL
+
+Noir       4    7     2
+
+Blanc      4    3     1
+
+Goldness   4    4     2     3      1
+
+LYLOU      XS   S     M     L  XL
+
+Jaune      4    4     4     4  4
+
+Corail     4    5     3     4  4
+
+Lagon      4    6     4     5  4
+
+Noir       4    4     3     4  4
+
+LAYA       XS   S     M     L  XL
+
+Jaune      4    4     4     4  4
+
+Corail     4    3     4     6  4
+
+Lagon      3    3     6     9  10
+
+Noir       2    4     4     3  2
+
+EVA        XS   S     M     L  XL  XXL
+
+Jaune      2    2     2     1  2   2
+
+Corail     2    2     1     2  2   2
+
+Lagon      2    2     2     2  2   0
+
+Noir       6    8     4     4  4   5
+
+JESSY      S/M  L/XL
+
+Samui      5    3
+
+Bleu       2    2
+
+Noir       4    5
+
+Rose       4    4
+
+ALMA       XS   S     M     L  XL
+
+                         3
+Kaki        4   3  4     4  4
+
+Samui       4   3  4     4  4
+
+Capri       4   4  4     4  4
+
+Mykonos     3   2  3     2  2
+
+Corail      2   3  4     3  4
+
+Vert d'eau  3   1  1     2  3
+
+Noir        6   4  5     3  3
+
+Rose        4   4  5     4  4
+
+Marbella    3   4  5     2  4
+
+Bleu        4   5  4     5  9
+
+JADE        XS  S  M     L  XL
+
+Kaki        4   3  4     2  4
+
+Samui       3   4  4     4  4
+
+Capri       3   4  4     3  4
+
+Mykonos     4   2  3     3  4
+
+Corail      3   3  3     4  3
+
+Vert d'eau               2  2
+
+Noir        4   5  4     4  5
+
+Rose        4   6  4     2  3
+
+Marbella    5   5  2     3  4
+
+Bleu        6   1  3     3  5
+
+CECILE      XS  S  M     L  XL  XXL
+
+Kaki        3   3  4     4  4   4
+
+Samui       4   4  4     3  4   4
+
+Capri       5   2  4     3  4   3
+
+Mykonos     3   2  4     4  3   4
+
+Corail      4   4  3     5  4   4
+
+Vert d'eau  2   1  1     1      3
+
+Noir        2   2  2     2  3   4
+
+Rose        5   4  4     2  4   5
+
+Marbella    3   3  2     2  4   6
+
+Bleu        4   3  4     4  5   5
+
+KASSY       XS  S  M     L  XL
+
+Noir        5   4  2     3  3
+
+Bleu        5   2  4     3  5
+
+CHARLY LUX  XS  S  M     L  XL
+
+Colors      3   4  4     4  4
+
+THAIS LUX   XS  S  M     L  XL
+
+Colors      4   3  3     2  3
+
+ALICE LUX   XS  S  M     L  XL
+
+Pétrole     6   4  4     5  7
+
+Choco       4   3  4     3  3
+
+Léopard     4   4  4     4  4
+
+Bleu        3   4  4     4  4
+
+Capri       4   4  4     4  4
+
+Tahiti      4   4  4     4  4
+
+Rose        4   4  4     4  3
+
+Fresh       4   4  4     4  4
+
+LOLA LUX    XS  S  M     L  XL  XXL
+
+Pétrole     4   4  4     4  4   4
+
+Choco       4   3  3     4  4   4
+
+Léopard     4   4  4     3  4   4
+
+Bleu        4   3  3     4  4   4
+
+                      4
+Capri      4   2   4     4   3   4
+
+Tahiti     4   4   4     4   3   4
+
+Rose       4   4   4     4   4   4
+
+Fresh      4   4   4     4   4   3
+
+LUCIE      XS  S   M     L   XL
+
+Dorée      4   4   4     4   4
+
+Dark       4   4   4     4   3
+
+Champagne  4   4   2     4   4
+
+SUNNY      XS  S   M     L   XL
+
+Dorée      5   3   6     4   3
+
+Dark       2   3   3     4   3
+
+Champagne  4   4   2     4   3
+
+REBECA     XS  S   M     L   XL  XXL
+
+Noir       10  7   4     6   7   2
+
+Blanc      9   5   6     3   6   8
+
+VIRGINIE   XS  S   M     L   XL
+
+Noir       7   2   2     4   3
+
+Blanc      7   6   4     2   3
+
+ANTONIA    XS  S   M     L   XL  XXL
+
+Noir       4   4   3     3   4   3
+
+Blanc      4   5   6     2   5   5
+
+MAEVA      XS  S   M     L   XL
+
+Jaune      4   4   4     4   4
+
+Noir       3   4   4     5   5
+
+Lagon      4   3   4     4   4
+
+Corail     4   4   3     2   3
+
+NORA       XS  S   M     L   XL
+
+Jaune      4   4   4     4   4
+
+Noir       4   4   4     3   2
+
+Lagon      3   4   4     4   3
+
+Corail     4   3   3     4   2
+
+BRIGITTE   38  40  42    44  46  48
+
+Mauritus   4   4   2     3   5   3
+
+Bali       3   4   3     3   2   3
+
+Bleu       3   4   3     7   4   2
+
+ROSALIE    38  40  42    44  46  48
+
+Mauritus   3   3   4     4   3   3
+
+Bali       4   5   5     5   4   4
+
+ANGELA     38  40  42    44  46  48
+
+Noir       2   3   1     4   2   2
+
+Bleu       4   4   2     2   2   3
+
+Bali       3   4   3     2   1   2
+
+NADINE     38  40  42    44  46  48
+
+Mauritus   2   4   3     4   4   3
+
+Bleu       4   4   4     4   3   4
+
+Noir       4   4   4     4   5   5
+
+Bali       1       1     2       2
+
+VALERIE    38  40  42    44  46  48
+
+Mauritus   4   4   4     2   5   5
+
+Noir       4   3   3     2   3   5
+
+Bleu       4   5   3     3   4   2
+
+YOLLANDE   38  40  42    44  46  48
+
+Noir       2   4   4     5   5   6
+
+                      5
+           Bleu    3          4           4              4               4   3
+
+            Bali                                                         3   3
+
+         Mauritus  3          2           2              4               3   4
+
+YOLLANDE LUX       38         40          42             44              46  48
+
+Dark Lurex         2          4           3              3               4   4
+
+Kaki Lurex         3          4           4              4               4   4
+
+ANGELA LUX         38         40          42             44              46  48
+
+Glitter            4          4           4              4               2   3
+
+ROSALIE LUX        38         40          42             44              46  48
+
+Dark Lurex         4          3           4              4               4   3
+
+Kaki Lurex         4          5           4              4               4   4
+
+NADINE LUX         38         40          42             44              46  48
+
+Dark Lurex         4          3           4              4               4   4
+
+Kaki Lurex         4          4           4              4               3   4
+
+VALERIE LUX        38         40          42             44              46  48
+
+Dark Lurex         2          2           3              3               2   4
+
+Kaki Lurex         4          3           3              3               4   4
+
+BRIGITTE LUX       38         40          42             44              46  48
+
+Dark Lurex         4          3           4              4               2   3
+
+Kaki Lurex         3          4           4              4               4   4
+
+BARBARA LUX        XS         S           M              L               XL  XXL
+
+Blue Lurex         2          2           2              2               2   2
+
+Kaki Lurex         4          4           4              4               4   4
+
+Noir Lurex         2          2           2              2               2   4
+
+ROMYTA LUX         XS         S           M              L               XL  XXL
+
+Blue Lurex         3          4           4              4               4   4
+
+Kaki Lurex         2          3           4              3               3   4
+
+Noir Lurex         4          4           4              4               4   4
+
+LUCIE LUX          XS         S           M              L               XL
+
+Blue Lurex         4          4           4              4               4
+
+Kaki Lurex         4          3           4              3               4
+
+Noir Lurex         3          3           4              3               4
+
+LOUISE LUX         XS         S           M              L               XL  XXL
+
+Blue Lurex         4          4           4              4               4   4
+
+Kaki Lurex         3          2           4              4               3   4
+
+Noir Lurex         4          2           4              4               4   4
+
+AUDREY LUX         XS         S           M              L               XL
+
+Blue Lurex         3          4           4              4               4
+
+Kaki Lurex         2          2           3              4               4
+
+Noir Lurex         4          4           1              4               4
+
+MEGAN LUX          XS         S           M              L               XL
+
+Noir/gold          4          4           4              4               4
+
+Blanc/gold         4          4           3              4               4
+
+Noir/dentelle      4          4           4              4               4
+
+Blanc/dentelle     3          4           4              4               3
+
+KARINE LUX         XS         S           M              L               XL
+
+Noir/gold          4          3           4              4               4
+
+Blanc/gold         4          4           4              4               4
+
+Noir/dentelle      4          3           4              4               4
+
+Blanc/dentelle     4          4           4              3               4
+
+LAURA LUX          Noir       Ivoire      Leo            Caramel
+
+            TU     6          4           6              6
+
+LAURA LUX          Noir/Gold  Blanc/Gold  Noir/Dentelle  Blanc/Dentelle
+
+                                             6
+TU         4   4  4     4
+
+CHARLOTTE  XS  S  M     L  XL  XXL
+
+Noir       3   3  3     3  3   2
+
+                     7
+                            KIDS
+
+CYNTHIA             3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Sirènene            4       3       4       4        4
+
+Samui               4       4       4       3        4
+
+Tahiti              4       4       4       4        4
+
+MEYLI               3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Bleu                4       4       4       4        3
+
+Fresh               4       4       4       4        4
+
+SAM                 3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Fresh               4       4       4       4        4
+
+Tahiti              4       3       4       4        3
+
+MILA                3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Noir Lurex                  4       4       4        2
+
+Sequin              4       4       5       4        2
+
+BELLA               3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Samui               3       4       4       2        3
+
+Noir Lurex                          5       4        2
+
+ROSE        1/2ans  3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Tahiti      4       4       3       3       4        3
+
+Sirènene    3       3       3       1       3        3
+
+                               1
+CHELSY     1/2ans  3/4ans  5/6ans  7/8ans  9/10ans  11/12ans
+
+Samui              4       4       4       4        4
+
+Capri              4       4       2       3        4
+
+JASON              3/4     5/6     7/8     9/10     11/12
+
+Orange             3       3       4       2        3
+
+SERGE              3/4     5/6     7/8     9/10     11/12
+
+Noir               5       8       3       2        4
+
+RAMZY              3/4     5/6     7/8     9/10     11/12
+
+Fidji              3       4       3       2        4
+
+Louis      1/2     3/4     5/6     7/8     9/10     11/12
+
+Dino       5       3       4       4
+
+RAPHAEL    1/2     3/4     5/6     7/8     9/10     11/12
+
+Amazonico          4       4       4       4        4
+
+Caiman             2       4       4       4        1
+
+Fidji              4       4       4       4        3
+
+Italy              4       4       4       4        4
+
+ANTHONY    1/2     3/4     5/6     7/8     9/10     11/12
+
+Vert               5       4       3       5        4
+
+Bleu               3       3       4       4        4
+
+BASTIEN    1/2     3/4     5/6     7/8     9/10     11/12
+
+                                2
+Samui        4    4       4    4     4
+
+Lanta        4    4       4    4     4
+
+EZIO    1/2  3/4  5/6     7/8  9/10  11/12
+
+Bleu         4    4       4    4     4
+
+Noir         3    3       4    4     4
+
+Orange       4    4       4    4     4
+
+                       3
+13/14ans
+
+5
+
+4
+
+4
+
+13/14ans
+
+4
+
+4
+
+13/14ans
+
+4
+
+4
+
+13/14ans
+
+4
+
+2
+
+13/14ans
+
+2
+
+4
+
+13/14ans
+
+          4
+13/14ans
+
+4
+
+4
+
+13/14
+
+4
+
+13/14
+
+4
+
+13/14
+
+3
+
+13/14
+
+13/14
+
+4
+
+4
+
+4
+
+13/14
+
+4
+
+4
+
+13/14
+
+          5
+4
+
+3
+
+13/14
+
+4
+
+4
+
+3
+
+       6
+                         HOMME
+
+PACO           S    M    L         XL  XXL
+
+Noir           21   17   4         11  0
+
+Grande taille  3XL  4XL
+
+Noir           10   10
+
+SERGE          S    M    L         XL  XXL
+
+Noir           19   17   36        34  26
+
+GABRIEL        S    M    L         XL  XXL
+
+Amazonico      4    1    2         3   3
+
+ERIC           S    M    L         XL  XXL
+
+Flower         4    4    4         2   4
+
+RAMZY          S    M    L         XL  XXL
+
+Fidji          4    4    3         3   4
+
+Forest         4    4    4         4   4
+
+JOHN           S    M    L         XL  XXL
+
+Orange         4    3    4         4   5
+
+Bleu           4    3    3         2   3
+
+CHRISTIANO     S    M    L         XL  XXL  3XL
+
+Tulum          3    2    4         3   4    4
+
+Citron         3    3    3         4   4    4
+
+CLEMENT        S    M    L         XL  XXL  3XL
+
+Marine         4    4    4         4   3    4
+
+Beige          4    4    4         4   4    4
+
+REGIS          S    M    L         XL  XXL  3XL
+
+Corail         4    5    5         4   4    4
+
+Noir           4    3    4         3   4    4
+
+KEVIN          S    M    L         XL  XXL  3XL
+
+Turquoise      2    4    4         4   4    3
+
+Noir           4    4    2         4   3    3
+
+Fluo/Corail    3    3    1         4   4    4
+
+Marine         4    4    3         4   4    4
+
+EZIO           S    M    L         XL  XXL  3XL
+
+Bleu           4    3    4         4   2    4
+
+Corail         3    2    0         4   2    4
+
+Noir           2    3    4         2   2    3
+
+Turquoise      4    4    3         4   3    4
+
+RAPHAEL        S    M    L         XL  XXL
+
+Amazonico      4    4    4         4   3
+
+Caiman         4    2    4         4   4
+
+Fidji          4    4    4         4   4
+
+Italy          3    1    4         4   4
+
+BASTIEN        S    M    L         XL  XXL
+
+Samui          4    4    3         4   4
+
+Lanta          4    4    2         4   4
+
+ANTHONY        S    M    L         XL  XXL
+
+Bleu           4    3    3         4   4
+
+Vert           4    4    4         4   4
+
+                                1
+2
+
