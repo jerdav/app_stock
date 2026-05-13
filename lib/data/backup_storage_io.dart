@@ -2,6 +2,20 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
+class AutomaticBackup {
+  const AutomaticBackup({
+    required this.path,
+    required this.name,
+    required this.modifiedAt,
+    required this.sizeBytes,
+  });
+
+  final String path;
+  final String name;
+  final DateTime modifiedAt;
+  final int sizeBytes;
+}
+
 Future<String?> createDatabaseBackup({
   required String databasePath,
   required String timestamp,
@@ -22,6 +36,36 @@ Future<String?> createDatabaseBackup({
   await _rotateBackups(backupDir);
 
   return backupFile.path;
+}
+
+Future<List<AutomaticBackup>> listAutomaticBackups() async {
+  final appDocDir = await getApplicationDocumentsDirectory();
+  final backupDir = Directory('${appDocDir.path}/backups');
+  if (!await backupDir.exists()) {
+    return const [];
+  }
+
+  final files = await backupDir
+      .list()
+      .where((entity) => entity is File && entity.path.endsWith('.db'))
+      .cast<File>()
+      .toList();
+
+  final backups = <AutomaticBackup>[];
+  for (final file in files) {
+    final stat = await file.stat();
+    backups.add(
+      AutomaticBackup(
+        path: file.path,
+        name: file.uri.pathSegments.last,
+        modifiedAt: stat.modified,
+        sizeBytes: stat.size,
+      ),
+    );
+  }
+
+  backups.sort((a, b) => b.modifiedAt.compareTo(a.modifiedAt));
+  return backups;
 }
 
 Future<bool> restoreDatabaseBackup({

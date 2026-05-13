@@ -387,47 +387,7 @@ class _StockHomePageState extends State<StockHomePage> {
         return;
       }
 
-      setState(() {
-        _isLoading = true;
-        _loadError = null;
-      });
-
-      final now = DateTime.now();
-      await _executeBackup(now, await SharedPreferences.getInstance());
-      final dbPath = await _database.getDatabasePath();
-      await _database.close();
-
-      final restored = await restoreDatabaseBackup(
-        backupPath: backupPath,
-        databasePath: dbPath,
-      );
-
-      if (!mounted) {
-        return;
-      }
-
-      if (!restored) {
-        setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Restauration impossible : fichier introuvable.'),
-          ),
-        );
-        return;
-      }
-
-      await _loadStock();
-
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Sauvegarde restaurée.'),
-          backgroundColor: Color(0xFF0F766E),
-        ),
-      );
+      await _restoreBackupAtPath(backupPath);
     } catch (e) {
       if (!mounted) {
         return;
@@ -437,6 +397,146 @@ class _StockHomePageState extends State<StockHomePage> {
         SnackBar(content: Text('Erreur restauration : $e')),
       );
     }
+  }
+
+  Future<void> _restoreAutomaticBackup() async {
+    try {
+      final backups = await listAutomaticBackups();
+      if (!mounted) {
+        return;
+      }
+
+      if (backups.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Aucune sauvegarde automatique disponible.'),
+          ),
+        );
+        return;
+      }
+
+      final selectedBackup = await showModalBottomSheet<AutomaticBackup>(
+        context: context,
+        showDragHandle: true,
+        builder: (context) => SafeArea(
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: backups.length,
+            separatorBuilder: (_, __) => const Divider(height: 1),
+            itemBuilder: (context, index) {
+              final backup = backups[index];
+              return ListTile(
+                leading: const Icon(Icons.history, color: Color(0xFF0F766E)),
+                title: Text(_formatBackupDate(backup.modifiedAt)),
+                subtitle: Text(
+                  '${backup.name} - ${_formatFileSize(backup.sizeBytes)}',
+                ),
+                onTap: () => Navigator.of(context).pop(backup),
+              );
+            },
+          ),
+        ),
+      );
+
+      if (selectedBackup == null || !mounted) {
+        return;
+      }
+
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Restaurer cette sauvegarde ?'),
+          content: Text(
+            'Le stock actuel sera sauvegarde avant restauration, puis remplace par la sauvegarde du ${_formatBackupDate(selectedBackup.modifiedAt)}.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Annuler'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Restaurer'),
+            ),
+          ],
+        ),
+      );
+
+      if (confirmed != true) {
+        return;
+      }
+
+      await _restoreBackupAtPath(selectedBackup.path);
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur restauration automatique : $e')),
+      );
+    }
+  }
+
+  Future<void> _restoreBackupAtPath(String backupPath) async {
+    setState(() {
+      _isLoading = true;
+      _loadError = null;
+    });
+
+    final now = DateTime.now();
+    await _executeBackup(now, await SharedPreferences.getInstance());
+    final dbPath = await _database.getDatabasePath();
+    await _database.close();
+
+    final restored = await restoreDatabaseBackup(
+      backupPath: backupPath,
+      databasePath: dbPath,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (!restored) {
+      setState(() => _isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Restauration impossible : fichier introuvable.'),
+        ),
+      );
+      return;
+    }
+
+    await _loadStock();
+
+    if (!mounted) {
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Sauvegarde restaurée.'),
+        backgroundColor: Color(0xFF0F766E),
+      ),
+    );
+  }
+
+  String _formatBackupDate(DateTime value) {
+    final day = value.day.toString().padLeft(2, '0');
+    final month = value.month.toString().padLeft(2, '0');
+    final hour = value.hour.toString().padLeft(2, '0');
+    final minute = value.minute.toString().padLeft(2, '0');
+    return '$day/$month/${value.year} $hour:$minute';
+  }
+
+  String _formatFileSize(int bytes) {
+    if (bytes >= 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} Mo';
+    }
+    if (bytes >= 1024) {
+      return '${(bytes / 1024).round()} Ko';
+    }
+    return '$bytes o';
   }
 
   void _showBackupReminder() {
@@ -556,6 +656,7 @@ class _StockHomePageState extends State<StockHomePage> {
         onDeleteCategory: _deleteCategory,
         onExportBackup: _shareManualBackup,
         onRestoreBackup: _restoreBackupFromFile,
+        onRestoreAutomaticBackup: _restoreAutomaticBackup,
       ),
     ];
 
@@ -1291,6 +1392,7 @@ class _SettingsView extends StatelessWidget {
     required this.onDeleteCategory,
     required this.onExportBackup,
     required this.onRestoreBackup,
+    required this.onRestoreAutomaticBackup,
   });
   final List<String> categories;
   final Map<String, int> categoryProductCounts;
@@ -1299,6 +1401,7 @@ class _SettingsView extends StatelessWidget {
   final Future<bool> Function(String name) onDeleteCategory;
   final VoidCallback onExportBackup;
   final VoidCallback onRestoreBackup;
+  final VoidCallback onRestoreAutomaticBackup;
 
   @override
   Widget build(BuildContext context) {
@@ -1350,6 +1453,15 @@ class _SettingsView extends StatelessWidget {
           title: const Text('Restaurer une sauvegarde'),
           subtitle: const Text('Remplace le stock actuel par un fichier .db.'),
           onTap: onRestoreBackup,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        const SizedBox(height: 8),
+        ListTile(
+          tileColor: Colors.white,
+          leading: const Icon(Icons.history, color: Color(0xFF7C3AED)),
+          title: const Text('Restaurer une sauvegarde automatique'),
+          subtitle: const Text('Choisit un point de restauration interne.'),
+          onTap: onRestoreAutomaticBackup,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         const SizedBox(height: 8),
