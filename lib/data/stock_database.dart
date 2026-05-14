@@ -4,6 +4,8 @@ import 'package:sqflite/sqflite.dart';
 import '../main.dart';
 import 'stock_seed.dart';
 
+const _databaseFileName = 'stock_store_demo.db';
+
 class StockDatabase {
   StockDatabase._();
 
@@ -17,7 +19,7 @@ class StockDatabase {
     }
 
     final databasePath = await getDatabasesPath();
-    final path = p.join(databasePath, 'stock_pilot.db');
+    final path = p.join(databasePath, _databaseFileName);
 
     _database = await openDatabase(
       path,
@@ -34,7 +36,7 @@ class StockDatabase {
 
   Future<String> getDatabasePath() async {
     final databasePath = await getDatabasesPath();
-    return p.join(databasePath, 'stock_pilot.db');
+    return p.join(databasePath, _databaseFileName);
   }
 
   Future<void> close() async {
@@ -114,9 +116,6 @@ class StockDatabase {
     if (oldVersion < 5) {
       await _normalizeKidsSku(db);
     }
-    if (oldVersion < 6) {
-      await _syncProductCategories(db);
-    }
   }
 
   Future<void> _normalizeKidsSku(DatabaseExecutor db) async {
@@ -125,44 +124,6 @@ class StockDatabase {
       SET sku = REPLACE(sku, '-KID', '')
       WHERE sku LIKE 'K-%-KID'
     ''');
-  }
-
-  Future<void> _syncProductCategories(DatabaseExecutor db) async {
-    final now = DateTime.now().toIso8601String();
-    for (final category in productCategories) {
-      await db.insert(
-        'categories',
-        {'name': category, 'created_at': now},
-        conflictAlgorithm: ConflictAlgorithm.ignore,
-      );
-    }
-
-    final allowedRows = await db.query(
-      'categories',
-      columns: ['id'],
-      where:
-          'name IN (${List.filled(productCategories.length, '?').join(', ')})',
-      whereArgs: productCategories,
-    );
-    final allowedIds = allowedRows.map((row) => row['id'] as int).toList();
-    final defaultCategoryId = await _categoryId(db, productCategories.first);
-
-    if (allowedIds.isNotEmpty) {
-      await db.update(
-        'products',
-        {'category_id': defaultCategoryId},
-        where:
-            'category_id NOT IN (${List.filled(allowedIds.length, '?').join(', ')})',
-        whereArgs: allowedIds,
-      );
-    }
-
-    await db.delete(
-      'categories',
-      where:
-          'name NOT IN (${List.filled(productCategories.length, '?').join(', ')})',
-      whereArgs: productCategories,
-    );
   }
 
   Future<void> _createColorsTable(DatabaseExecutor db) async {
@@ -196,20 +157,38 @@ class StockDatabase {
   }
 
   Future<void> _seed(Database db) async {
-    for (final category in productCategories) {
-      await db.insert('categories', {
-        'name': category,
-        'created_at': DateTime.now().toIso8601String(),
-      });
-    }
-
     for (final product in stockSeedProducts) {
+      final categoryId = await _upsertSeedCategory(db, product.category);
       await _insertSeedProduct(
         db,
         product: product,
-        categoryId: await _categoryId(db, product.category),
+        categoryId: categoryId,
       );
     }
+  }
+
+  Future<int> _upsertSeedCategory(DatabaseExecutor db, String name) async {
+    final cleanName = normalizeProductCategory(name);
+    if (cleanName.isEmpty) {
+      throw ArgumentError('Seed category cannot be empty.');
+    }
+
+    final rows = await db.query(
+      'categories',
+      columns: ['id'],
+      where: 'name = ? COLLATE NOCASE',
+      whereArgs: [cleanName],
+      limit: 1,
+    );
+
+    if (rows.isNotEmpty) {
+      return rows.first['id'] as int;
+    }
+
+    return db.insert('categories', {
+      'name': cleanName,
+      'created_at': DateTime.now().toIso8601String(),
+    });
   }
 
   Future<int> _categoryId(DatabaseExecutor db, String name) async {
@@ -602,7 +581,7 @@ class StockDatabase {
   Future<int> _upsertCategory(Transaction txn, String name) async {
     final cleanName = normalizeProductCategory(name);
     if (cleanName.isEmpty) {
-      return _categoryId(txn, productCategories.first);
+      throw ArgumentError('Category cannot be empty.');
     }
     final rows = await txn.query(
       'categories',
@@ -733,3 +712,6 @@ class StockDatabase {
     );
   }
 }
+
+
+

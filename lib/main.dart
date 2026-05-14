@@ -13,7 +13,8 @@ import 'data/stock_database.dart';
 import 'data/stock_seed.dart';
 
 const defaultProductLocation = 'Stock principal';
-const productCategories = <String>['Femme', 'Homme', 'Kids'];
+const productCategories = <String>[];
+const defaultVariantOption = 'Standard';
 
 void main() {
   if (!kIsWeb &&
@@ -57,7 +58,7 @@ class StockApp extends StatelessWidget {
           foregroundColor: Color(0xFF10201D),
           elevation: 0,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           color: Colors.white,
           margin: EdgeInsets.zero,
@@ -639,21 +640,21 @@ class _StockHomePageState extends State<StockHomePage> {
       ),
       _ProductsView(
         products: _filteredProducts,
+        categories: _categories,
+        categoryProductCounts: _categoryProductCounts,
         query: _query,
         activeFilterType: _filterType,
         onQueryChanged: (value) => setState(() => _query = value),
         onAddProduct: _openProductForm,
+        onAddCategory: _addCategory,
+        onRenameCategory: _renameCategory,
+        onDeleteCategory: _deleteCategory,
         onProductTap: _openProductDetails,
         onVariantStockChanged: _changeStock,
         onClearFilter: () => setState(() => _filterType = null),
       ),
       _MovementsView(movements: _movements),
       _SettingsView(
-        categories: _categories,
-        categoryProductCounts: _categoryProductCounts,
-        onAddCategory: _addCategory,
-        onRenameCategory: _renameCategory,
-        onDeleteCategory: _deleteCategory,
         onExportBackup: _shareManualBackup,
         onRestoreBackup: _restoreBackupFromFile,
         onRestoreAutomaticBackup: _restoreAutomaticBackup,
@@ -747,6 +748,18 @@ class _StockHomePageState extends State<StockHomePage> {
   }
 
   Future<void> _openProductForm([Product? product]) async {
+    if (product == null && _categories.isEmpty) {
+      setState(() {
+        _selectedIndex = 1;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Cree d'abord une categorie dans l'onglet Produits."),
+        ),
+      );
+      return;
+    }
+
     final result = await showModalBottomSheet<ProductFormResult>(
       context: context,
       isScrollControlled: true,
@@ -1240,20 +1253,30 @@ class _DashboardView extends StatelessWidget {
 class _ProductsView extends StatelessWidget {
   const _ProductsView({
     required this.products,
+    required this.categories,
+    required this.categoryProductCounts,
     required this.query,
     this.activeFilterType,
     required this.onQueryChanged,
     required this.onAddProduct,
+    required this.onAddCategory,
+    required this.onRenameCategory,
+    required this.onDeleteCategory,
     required this.onProductTap,
     required this.onVariantStockChanged,
     required this.onClearFilter,
   });
 
   final List<Product> products;
+  final List<String> categories;
+  final Map<String, int> categoryProductCounts;
   final String query;
   final String? activeFilterType;
   final ValueChanged<String> onQueryChanged;
   final VoidCallback onAddProduct;
+  final Future<bool> Function(String name) onAddCategory;
+  final Future<bool> Function(String oldName, String newName) onRenameCategory;
+  final Future<bool> Function(String name) onDeleteCategory;
   final ValueChanged<Product> onProductTap;
   final void Function(Product product, ProductVariant variant, int delta)
       onVariantStockChanged;
@@ -1270,9 +1293,25 @@ class _ProductsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasSearchOrFilter = query.isNotEmpty || activeFilterType != null;
+    final canAddProduct = !hasSearchOrFilter && categories.isNotEmpty;
+    final emptyProductMessage = !hasSearchOrFilter && categories.isEmpty
+        ? 'Cree une categorie, puis ajoute ton premier produit.'
+        : query.isEmpty
+            ? 'Ajoute ton premier modele et sa premiere variante.'
+            : 'Essaie avec un autre nom, SKU, taille ou couleur.';
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        _CategoryManagementSection(
+          categories: categories,
+          categoryProductCounts: categoryProductCounts,
+          onAddCategory: onAddCategory,
+          onRenameCategory: onRenameCategory,
+          onDeleteCategory: onDeleteCategory,
+        ),
+        const SizedBox(height: 24),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -1323,11 +1362,9 @@ class _ProductsView extends StatelessWidget {
           _EmptyState(
             icon: Icons.inventory_2_outlined,
             title: query.isEmpty ? 'Aucun produit' : 'Aucun resultat',
-            message: query.isEmpty
-                ? 'Ajoute ton premier modele et sa premiere variante.'
-                : 'Essaie avec un autre nom, SKU, taille ou couleur.',
-            actionLabel: query.isEmpty ? 'Ajouter' : null,
-            onActionPressed: query.isEmpty ? onAddProduct : null,
+            message: emptyProductMessage,
+            actionLabel: canAddProduct ? 'Ajouter' : null,
+            onActionPressed: canAddProduct ? onAddProduct : null,
           )
         else
           ...products.map(
@@ -1385,20 +1422,10 @@ class _MovementsView extends StatelessWidget {
 
 class _SettingsView extends StatelessWidget {
   const _SettingsView({
-    required this.categories,
-    required this.categoryProductCounts,
-    required this.onAddCategory,
-    required this.onRenameCategory,
-    required this.onDeleteCategory,
     required this.onExportBackup,
     required this.onRestoreBackup,
     required this.onRestoreAutomaticBackup,
   });
-  final List<String> categories;
-  final Map<String, int> categoryProductCounts;
-  final Future<bool> Function(String name) onAddCategory;
-  final Future<bool> Function(String oldName, String newName) onRenameCategory;
-  final Future<bool> Function(String name) onDeleteCategory;
   final VoidCallback onExportBackup;
   final VoidCallback onRestoreBackup;
   final VoidCallback onRestoreAutomaticBackup;
@@ -1425,14 +1452,6 @@ class _SettingsView extends StatelessWidget {
           title: 'Stock Boutique',
           message:
               'Le stock est maintenant prepare pour les tailles, couleurs et collections.',
-        ),
-        const SizedBox(height: 24),
-        _CategoryManagementSection(
-          categories: categories,
-          categoryProductCounts: categoryProductCounts,
-          onAddCategory: onAddCategory,
-          onRenameCategory: onRenameCategory,
-          onDeleteCategory: onDeleteCategory,
         ),
         const SizedBox(height: 24),
         const _SectionHeader(title: 'Sécurité'),
@@ -1897,11 +1916,13 @@ class VariantStockRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _ColorDot(label: variant.color, colorHex: variant.colorHex),
-          const SizedBox(width: 8),
+          if (variant.hasColorVariant) ...[
+            _ColorDot(label: variant.color, colorHex: variant.colorHex),
+            const SizedBox(width: 8),
+          ],
           Expanded(
             child: Text(
-              '${variant.color} / ${variant.size}',
+              variant.label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w700),
@@ -2283,6 +2304,8 @@ class _ProductFormSheetState extends State<ProductFormSheet> {
   late final TextEditingController _minimumController;
   String? _selectedCategory;
   bool _colorHexFromName = false;
+  bool _useColorVariant = false;
+  bool _useSizeVariant = false;
 
   @override
   void initState() {
@@ -2300,6 +2323,8 @@ class _ProductFormSheetState extends State<ProductFormSheet> {
       text: variant?.colorHex ?? colorHexFromName ?? '',
     );
     _sizeController = TextEditingController(text: variant?.size ?? '');
+    _useColorVariant = _hasCustomVariantValue(variant?.color);
+    _useSizeVariant = _hasCustomVariantValue(variant?.size);
     _quantityController =
         TextEditingController(text: '${variant?.quantity ?? 0}');
     _minimumController =
@@ -2392,36 +2417,66 @@ class _ProductFormSheetState extends State<ProductFormSheet> {
               ),
               const SizedBox(height: 12),
               Text(
-                isEditing ? 'Premiere variante' : 'Variante initiale',
+                isEditing ? 'Stock et variantes' : 'Stock initial',
                 style: const TextStyle(fontWeight: FontWeight.w800),
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _colorController,
-                      decoration: const InputDecoration(labelText: 'Couleur'),
-                      validator: _required,
-                      onChanged: _onColorNameChanged,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _sizeController,
-                      decoration: const InputDecoration(labelText: 'Taille'),
-                      validator: _required,
-                    ),
-                  ),
-                ],
+              _VariantOptionSwitch(
+                title: 'Couleur',
+                value: _useColorVariant,
+                onChanged: (value) {
+                  setState(() {
+                    _useColorVariant = value;
+                    if (value && !_hasCustomVariantValue(_colorController.text)) {
+                      _colorController.clear();
+                      _colorHexController.clear();
+                      _colorHexFromName = false;
+                    } else if (!value) {
+                      _colorController.clear();
+                      _colorHexController.clear();
+                      _colorHexFromName = false;
+                    }
+                  });
+                },
               ),
-              const SizedBox(height: 12),
-              _ColorPickerField(
-                label: _colorController.text,
-                colorHex: _colorHexController.text,
-                onPickColor: _pickColor,
+              if (_useColorVariant) ...[
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _colorController,
+                  decoration: const InputDecoration(labelText: 'Couleur'),
+                  validator: _useColorVariant ? _required : null,
+                  onChanged: _onColorNameChanged,
+                ),
+                const SizedBox(height: 12),
+                _ColorPickerField(
+                  label: _colorController.text,
+                  colorHex: _colorHexController.text,
+                  onPickColor: _pickColor,
+                ),
+              ],
+              const SizedBox(height: 8),
+              _VariantOptionSwitch(
+                title: 'Taille',
+                value: _useSizeVariant,
+                onChanged: (value) {
+                  setState(() {
+                    _useSizeVariant = value;
+                    if (value && !_hasCustomVariantValue(_sizeController.text)) {
+                      _sizeController.clear();
+                    } else if (!value) {
+                      _sizeController.clear();
+                    }
+                  });
+                },
               ),
+              if (_useSizeVariant) ...[
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _sizeController,
+                  decoration: const InputDecoration(labelText: 'Taille'),
+                  validator: _useSizeVariant ? _required : null,
+                ),
+              ],
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -2488,6 +2543,13 @@ class _ProductFormSheetState extends State<ProductFormSheet> {
 
   String? _colorHexForName(String name) {
     return widget.colorHexByName[colorLookupKey(name)];
+  }
+
+  bool _hasCustomVariantValue(String? value) {
+    final cleanValue = value?.trim();
+    return cleanValue != null &&
+        cleanValue.isNotEmpty &&
+        colorLookupKey(cleanValue) != colorLookupKey(defaultVariantOption);
   }
 
   Future<void> _pickColor() async {
@@ -2537,9 +2599,15 @@ class _ProductFormSheetState extends State<ProductFormSheet> {
         sku: _skuController.text.trim(),
         category: _selectedCategory!.trim(),
         brand: brand,
-        color: _colorController.text.trim(),
-        colorHex: _normalizeColorHex(_colorHexController.text),
-        size: _sizeController.text.trim(),
+        color: _useColorVariant
+            ? _colorController.text.trim()
+            : defaultVariantOption,
+        colorHex: _useColorVariant
+            ? _normalizeColorHex(_colorHexController.text)
+            : null,
+        size: _useSizeVariant
+            ? _sizeController.text.trim()
+            : defaultVariantOption,
         quantity: int.parse(_quantityController.text),
         minimumQuantity: int.parse(_minimumController.text),
       ),
@@ -2569,6 +2637,8 @@ class _VariantFormSheetState extends State<VariantFormSheet> {
   late final TextEditingController _quantityController;
   late final TextEditingController _minimumController;
   bool _colorHexFromName = false;
+  bool _useColorVariant = false;
+  bool _useSizeVariant = false;
 
   @override
   void initState() {
@@ -2581,6 +2651,8 @@ class _VariantFormSheetState extends State<VariantFormSheet> {
       text: variant?.colorHex ?? colorHexFromName ?? '',
     );
     _sizeController = TextEditingController(text: variant?.size ?? '');
+    _useColorVariant = _hasCustomVariantValue(variant?.color);
+    _useSizeVariant = _hasCustomVariantValue(variant?.size);
     _quantityController =
         TextEditingController(text: '${variant?.quantity ?? 0}');
     _minimumController =
@@ -2622,32 +2694,62 @@ class _VariantFormSheetState extends State<VariantFormSheet> {
                     ),
               ),
               const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _colorController,
-                      decoration: const InputDecoration(labelText: 'Couleur'),
-                      validator: _required,
-                      onChanged: _onColorNameChanged,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _sizeController,
-                      decoration: const InputDecoration(labelText: 'Taille'),
-                      validator: _required,
-                    ),
-                  ),
-                ],
+              _VariantOptionSwitch(
+                title: 'Couleur',
+                value: _useColorVariant,
+                onChanged: (value) {
+                  setState(() {
+                    _useColorVariant = value;
+                    if (value && !_hasCustomVariantValue(_colorController.text)) {
+                      _colorController.clear();
+                      _colorHexController.clear();
+                      _colorHexFromName = false;
+                    } else if (!value) {
+                      _colorController.clear();
+                      _colorHexController.clear();
+                      _colorHexFromName = false;
+                    }
+                  });
+                },
               ),
-              const SizedBox(height: 12),
-              _ColorPickerField(
-                label: _colorController.text,
-                colorHex: _colorHexController.text,
-                onPickColor: _pickColor,
+              if (_useColorVariant) ...[
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _colorController,
+                  decoration: const InputDecoration(labelText: 'Couleur'),
+                  validator: _useColorVariant ? _required : null,
+                  onChanged: _onColorNameChanged,
+                ),
+                const SizedBox(height: 12),
+                _ColorPickerField(
+                  label: _colorController.text,
+                  colorHex: _colorHexController.text,
+                  onPickColor: _pickColor,
+                ),
+              ],
+              const SizedBox(height: 8),
+              _VariantOptionSwitch(
+                title: 'Taille',
+                value: _useSizeVariant,
+                onChanged: (value) {
+                  setState(() {
+                    _useSizeVariant = value;
+                    if (value && !_hasCustomVariantValue(_sizeController.text)) {
+                      _sizeController.clear();
+                    } else if (!value) {
+                      _sizeController.clear();
+                    }
+                  });
+                },
               ),
+              if (_useSizeVariant) ...[
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: _sizeController,
+                  decoration: const InputDecoration(labelText: 'Taille'),
+                  validator: _useSizeVariant ? _required : null,
+                ),
+              ],
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -2716,6 +2818,13 @@ class _VariantFormSheetState extends State<VariantFormSheet> {
     return widget.colorHexByName[colorLookupKey(name)];
   }
 
+  bool _hasCustomVariantValue(String? value) {
+    final cleanValue = value?.trim();
+    return cleanValue != null &&
+        cleanValue.isNotEmpty &&
+        colorLookupKey(cleanValue) != colorLookupKey(defaultVariantOption);
+  }
+
   Future<void> _pickColor() async {
     final colorHex = await _showColorPicker(
       context,
@@ -2752,12 +2861,43 @@ class _VariantFormSheetState extends State<VariantFormSheet> {
 
     Navigator.of(context).pop(
       VariantFormResult(
-        color: _colorController.text.trim(),
-        colorHex: _normalizeColorHex(_colorHexController.text),
-        size: _sizeController.text.trim(),
+        color: _useColorVariant
+            ? _colorController.text.trim()
+            : defaultVariantOption,
+        colorHex: _useColorVariant
+            ? _normalizeColorHex(_colorHexController.text)
+            : null,
+        size: _useSizeVariant
+            ? _sizeController.text.trim()
+            : defaultVariantOption,
         quantity: int.parse(_quantityController.text),
         minimumQuantity: int.parse(_minimumController.text),
       ),
+    );
+  }
+}
+
+class _VariantOptionSwitch extends StatelessWidget {
+  const _VariantOptionSwitch({
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: value,
+      onChanged: (value) => onChanged(value ?? false),
+      title: Text(title),
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      visualDensity: VisualDensity.compact,
     );
   }
 }
@@ -3114,8 +3254,25 @@ class ProductVariant {
     return quantity > 0 && quantity <= minimumQuantity;
   }
 
+  bool get hasColorVariant {
+    return colorLookupKey(color) != colorLookupKey(defaultVariantOption);
+  }
+
+  bool get hasSizeVariant {
+    return colorLookupKey(size) != colorLookupKey(defaultVariantOption);
+  }
+
   String get label {
-    return '$color / $size';
+    if (hasColorVariant && hasSizeVariant) {
+      return '$color / $size';
+    }
+    if (hasColorVariant) {
+      return color;
+    }
+    if (hasSizeVariant) {
+      return size;
+    }
+    return defaultVariantOption;
   }
 }
 
